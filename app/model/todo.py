@@ -19,3 +19,7 @@ class Todo(db.Model):
     
     def __repr__(self):
         return "<Todo : %s>" % self.todo_task
+
+    def save(self):
+        db.session.add(self)
+        db.session.commit()

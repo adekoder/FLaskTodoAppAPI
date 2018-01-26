@@ -1,5 +1,6 @@
 import unittest
 from app import create_app, db
+from app.model import User, Todo, AuthToken
 
 class BaseAppApiTest(unittest.TestCase):
 

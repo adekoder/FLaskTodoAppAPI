@@ -16,4 +16,15 @@ class User(db.Model):
 
     def __repr__(self):
         return "<User : %s>" % self.username
-    
+
+    @property
+    def password(self):
+        raise AttributeError("You don't have access to this attribute")
+
+    @password.setter
+    def password(self, password):
+        self.password_hash = password
+
+    def save(self):
+        db.session.add(self)
+        db.session.commit()
