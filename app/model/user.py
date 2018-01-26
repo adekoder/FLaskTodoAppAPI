@@ -1,5 +1,5 @@
 from datetime import datetime
-from app import db
+from . import db
 from .todo import Todo
 
 class User(db.Model):
@@ -16,4 +16,4 @@ class User(db.Model):
 
     def __repr__(self):
         return "<User : %s>" % self.username
-
+    

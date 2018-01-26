@@ -1,4 +1,4 @@
-from app import db
+from . import db
 
 class AuthToken(db.Model):
     __tablename__ = 'auth_token'

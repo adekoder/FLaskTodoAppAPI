@@ -16,5 +16,8 @@ def create_app(config_obj):
     from .api import api as api_blueprint
     app.register_blueprint(api_blueprint, url_prefix="/api/v1")
 
+    with app.app_context:
+        from .model import User, Todo, AuthToken
+        
     return app
 
