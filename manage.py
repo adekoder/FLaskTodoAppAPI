@@ -10,7 +10,7 @@ manager.add_command('db', MigrateCommand)
 def runtest():
     import unittest
     tests = unittest.TestLoader().discover('test')
-    unittest.TextTestRunner(verbosity=1).run(tests)
+    unittest.TextTestRunner(verbosity=2).run(tests)
 
 if __name__ == "__main__":
     manager.run()

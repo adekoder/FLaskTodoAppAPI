@@ -9,14 +9,14 @@ class BaseConfig():
 class DevelopmentConfig(BaseConfig):
     DEBUG = True
     SECRET_KEY = 'This is a dev secret key'
-    SQLALCHEMY_DATABASE_URL = 'sqlite:///' + \
-            os.path.join(base_dir, 'todo_list.db')
+    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://adekoder:adekoder@localhost/flask-todo-api'
 
 class TestingConfig(BaseConfig):
     TESTING = True
     SECRET_KEY = 'This is a dev secret key'
-    SQLALCHEMY_DATABASE_URL = 'sqlite:///' + \
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + \
             os.path.join(base_dir, 'test.db')
+    WTF_CSRF_ENABLED = False
 
 
 

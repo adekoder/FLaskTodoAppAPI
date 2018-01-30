@@ -1,6 +1,7 @@
 from  flask import jsonify, request, make_response
 from . import api
-
+from .validators import *
+from .resource_schema import validation_error_schema
 
 @api.route('/login', methods=['POST'])
 def login():
@@ -8,7 +9,12 @@ def login():
 
 @api.route('/signup', methods=['POST'])
 def sign_up():
-    pass 
+    inputs = RegistrationValidator(request)
+    if not inputs.validate():
+        return validation_error_schema(inputs.errors)
+
+    return jsonify(status=True)
+    
 
 @api.route('/user', methods=['GET'])
 def users():
