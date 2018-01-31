@@ -21,3 +21,9 @@ class RegistrationValidator(Inputs):
             Regexp(PASSWORD_REGEX, message=PASSWORD_ERROR_MESSAGE)
             ]
     }
+
+class LoginValidator(Inputs):
+    json = {
+        'email': [InputRequired()],
+        'password': [InputRequired()]
+    }

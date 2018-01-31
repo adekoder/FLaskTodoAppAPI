@@ -1,12 +1,14 @@
 from app.model.user import User
-from app.api.resource_schema import authentication_error_schema, successfull_login_schema
+from app.model.auth_token import AuthToken
+from app.api.resource_schema import authentication_error_schema, successfull_login_schema, successfull_operation_schema
 from .jwt import JsonWebToken
 
 class Authentication():
 
-    def __init__(self, email, password):
-        self.email = email
-        self.password = password
+    def __init__(self, request):
+        self.__data = request.json
+        self.email = self.__data['email']
+        self.password = self.__data['password']
     
     def verify_login_credentials(self):
         self.user = User.query.filter_by(email=self.email).first()
@@ -27,3 +29,8 @@ class Authentication():
         token = json_web_token.generate_token()
         return successfull_login_schema(message='User created and logged in', token=token)
 
+    @staticmethod
+    def logout_user(user_id):
+        auth_token = AuthToken.query.filter_by(user_id=user_id).first()
+        auth_token.delete()
+        return successfull_operation_schema('LOGOUT_USER', 'Logout operation successfull')
