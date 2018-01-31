@@ -8,7 +8,6 @@ class JsonWebToken():
     def __init__(self, user):
         self.user = user
         self.user_id = self.user.user_id
-        self.auth_token = AuthToken()
 
     def create_jwt(self):
         payload =  {
@@ -32,14 +31,14 @@ class JsonWebToken():
         
     
     def user_have_token(self):
-        return self.auth_token.query.filter_by(user_id=self.user_id).first()
+        return AuthToken.query.filter_by(user_id=self.user_id).first()
 
     def update_user_token(self):
-        user_token = self.auth_token.query.filter_by(user_id=self.user_id)
-        user_token.token = self.token
-        user_token.save()
+        auth_token = AuthToken.query.filter_by(user_id=self.user_id).first()
+        auth_token.token = self.token
+        auth_token.save()
     
     def store_new_user_token(self):
-        self.auth_token.user_id = self.user_id
-        self.auth_token.token = self.token
-        self.auth_token.save()
+        auth_token = AuthToken(user_id=self.user_id,
+                token=self.token)
+        auth_token.save()

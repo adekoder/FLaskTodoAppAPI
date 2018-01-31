@@ -1,3 +1,4 @@
+from functools import wraps
 from datetime import datetime
 import jwt
 from jwt.exceptions import ExpiredSignatureError
@@ -25,7 +26,8 @@ def clear_user_token_from_db(token):
     auth_token.delete()
 
 def token_required(func):
-    def inner_wrapper(*args, **kwargs):
+    @wraps(func)
+    def wrapper(*args, **kwargs):
         if 'Authorization' not in request.headers:
             return header_error_schema('AUTHORIZATION_HEADER_ERROR',
                 'Authorization header must be set')
@@ -44,5 +46,5 @@ def token_required(func):
         else:
             current_user = payload
         return func(current_user, *args, **kwargs)
-    return inner_wrapper
+    return wrapper
 
