@@ -1,8 +1,9 @@
 from  flask import jsonify, request, make_response
 from . import api
-from .validators import *
+from .validators import RegistrationValidator, LoginValidator
 from .resource_schema import validation_error_schema, header_error_schema
 from .contrl.registration import Registration
+from .contrl.authentication import Authentication
 from .decorators import token_required
 
 
@@ -14,7 +15,11 @@ def content_type_json():
 
 @api.route('/login', methods=['POST'])
 def login():
-    pass
+    inputs = LoginValidator(request)
+    if not inputs.validate():
+        return validation_error_schema(inputs.errors)
+    auth = Authentication(request)
+    return auth.login()
 
 @api.route('/signup', methods=['POST'])
 def sign_up():
@@ -27,7 +32,7 @@ def sign_up():
 @api.route('/users', methods=['GET'])
 def users():
     pass
-
+    
 @api.route('/user/<string:user_id>', methods=['GET'])
 @token_required
 def get_user(current_user, user_id):
@@ -49,5 +54,12 @@ def update_todo_status():
 def delete_todo_item():
     pass
 
+@api.route('/logout', methods=['POST'])
+@token_required
+def logout_user(current_user):
+    return Authentication.logout_user(current_user['user_id'])
 
-
+@api.route('/test', methods=['GET'])
+@token_required
+def test(current_user):
+    return jsonify(current_user)
